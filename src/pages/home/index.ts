@@ -5,6 +5,23 @@ defineComponent(() => {
   const bg = ref(
     "bg-gradient-to-r from-[#456789] to-[#987654] h-[123.456px] text-[#fafafa] flex items-center justify-center",
   );
+  const transactionList = ref();
+
+  const onData = () => {
+    wx.request({
+      url: "http://localhost:3000/transaction/1",
+      method: "GET",
+      success: (res) => {
+        console.log("后端数据", res);
+        // result = res.data.result
+        transactionList.value = res.data;
+        // wx.setStorageSync('token', result.token)
+      },
+      fail: (res) => {
+        console.log("res", res);
+      },
+    });
+  };
 
   const onLogin = () => {
     wx.login({
@@ -35,5 +52,7 @@ defineComponent(() => {
     greeting,
     bg,
     onLogin,
+    onData,
+    transactionList,
   };
 });
