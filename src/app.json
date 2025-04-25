@@ -1,10 +1,7 @@
 {
   "darkmode": true,
   "themeLocation": "theme.json",
-  "pages": [
-    "pages/home/index",
-    "pages/mine/index"
-  ],
+  "pages": ["pages/home/index", "pages/mine/index"],
   "window": {
     "navigationBarBackgroundColor": "@bgColor",
     "navigationBarTextStyle": "@style",

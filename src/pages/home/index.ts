@@ -1,24 +1,64 @@
 import { defineComponent, ref } from "@vue-mini/core";
+import dayjs from "dayjs";
+
+// 添加时间格式化函数
+const formatDate = (time: string): string => {
+  // 解析时间字符串
+  const parsedTime = dayjs(time);
+
+  // 如果解析失败，返回原字符串
+  if (!parsedTime.isValid()) {
+    return time;
+  }
+
+  // 转换为本地时间
+  return parsedTime.locale("zh-cn").format("YYYY-MM-DD HH:mm:ss");
+};
 
 defineComponent(() => {
   const greeting = ref("欢迎使用 Vue Mini");
-  const bg = ref(
-    "bg-gradient-to-r from-[#456789] to-[#987654] h-[123.456px] text-[#fafafa] flex items-center justify-center",
-  );
+  const userInfo = ref();
   const transactionList = ref();
 
   const onData = () => {
+    console.log("gg", userInfo.value);
+    if (!userInfo.value) {
+      wx.showToast({
+        title: "请先登录",
+        icon: "error",
+        duration: 2000,
+      });
+      return;
+    }
+    // https://ledger-core-backend.elevenzjx.workers.dev/
+    // http://localhost:8787/
     wx.request({
-      url: "http://localhost:3000/transaction/1",
+      url: `https://ledger-core-backend.elevenzjx.workers.dev/api/transactions/${userInfo.value.id}`,
       method: "GET",
       success: (res) => {
-        console.log("后端数据", res);
-        // result = res.data.result
-        transactionList.value = res.data;
-        // wx.setStorageSync('token', result.token)
+        if (res.statusCode === 200) {
+          console.log("列表数据", res);
+          const { data } = res.data;
+          transactionList.value = data.map((item) => ({
+            ...item,
+            time: formatDate(item.time),
+          }));
+        }
+        if (res.statusCode === 400) {
+          wx.showToast({
+            title: res.data.error.issues[0].message,
+            icon: "error",
+            duration: 2000,
+          });
+        }
       },
-      fail: (res) => {
-        console.log("res", res);
+      fail: () => {
+        // 这里只处理网络请求失败的情况
+        wx.showToast({
+          title: "网络请求失败",
+          icon: "error",
+          duration: 2000,
+        });
       },
     });
   };
@@ -27,21 +67,26 @@ defineComponent(() => {
     wx.login({
       success: (res) => {
         if (res.code) {
-          // 发送 res.code 到后台换取 openId, sessionKey, unionId
-          console.log("res.code", res.code);
-
           wx.request({
-            url: "http://localhost:3000/user",
+            url: "https://ledger-core-backend.elevenzjx.workers.dev/api/login",
             method: "POST",
             data: { code: res.code },
             dataType: "json",
             success: (res) => {
-              console.log("后端登录返回的结果", res);
-              // result = res.data.result
-              // wx.setStorageSync('token', result.token)
+              const { data } = res.data;
+              wx.setStorage({
+                key: "userInfo",
+                data: data,
+              });
+              userInfo.value = data;
             },
-            fail: (res) => {
-              console.log("res", res);
+            fail: () => {
+              // 这里只处理网络请求失败的情况
+              wx.showToast({
+                title: "网络请求失败",
+                icon: "error",
+                duration: 2000,
+              });
             },
           });
         }
@@ -49,8 +94,8 @@ defineComponent(() => {
     });
   };
   return {
+    userInfo,
     greeting,
-    bg,
     onLogin,
     onData,
     transactionList,

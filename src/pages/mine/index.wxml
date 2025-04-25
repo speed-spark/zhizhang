@@ -1,4 +1,26 @@
-<view class="h-screen w-screen flex items-center justify-center">
-  <image class="w-24 h-24" src="/images/vue-mini.png"></image>
-  <view class="text-lg">{{ greeting }}</view>
+<view class="h-screen w-screen bg-gray-50">
+  <!-- 头像区域 -->
+  <view class="flex flex-col items-center justify-center p-4">
+    <image 
+      class="w-24 h-24 rounded-full border-2 border-gray-200"
+      src="/images/default-avatar.png"
+    ></image>
+    
+    <!-- 标题和描述 -->
+    <view class="mt-4 text-center">
+      <text class="text-2xl font-bold text-gray-800">欢迎使用</text>
+      <text class="mt-2 text-gray-600">请登录以开始使用账单管理功能</text>
+    </view>
+
+    <!-- 登录按钮 -->
+    <view class="mt-8">
+      <t-button 
+        bindtap="onLogin" 
+        theme="primary"
+        class="w-48"
+      >
+        立即登录
+      </t-button>
+    </view>
+  </view>
 </view>

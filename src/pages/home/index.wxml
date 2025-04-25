@@ -2,6 +2,7 @@
 
   <view class="flex justify-center my-4">
     <t-button bindtap="onLogin" theme="primary">登录</t-button>
+    <view >{{ userInfo.id }}</view>
   </view>
 
     <view class="flex justify-center my-4">
@@ -13,6 +14,7 @@
     <text>{{ transaction.amount }}</text>
     <text>{{ transaction.type }}</text>
     <text class="{{ transaction.isRecorded ? 'text-green-500' : 'text-red-500' }}">{{ transaction.isRecorded ? '已入账' : '未入账' }}</text>
+    <text>{{ transaction.time }}</text>
   </view>
 </view>
 
