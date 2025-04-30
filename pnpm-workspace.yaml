@@ -1,6 +1,0 @@
-onlyBuiltDependencies:
-  - esbuild
-  - weapp-tailwindcss
-packages:
-  - 'packages/*'
-  - 'src/*'

@@ -1,9 +1,14 @@
-import { UnifiedViteWeappTailwindcssPlugin } from 'weapp-tailwindcss/vite'
-import { defineConfig } from 'weapp-vite/config'
+import { UnifiedViteWeappTailwindcssPlugin } from "weapp-tailwindcss/vite";
+import { defineConfig } from "weapp-vite/config";
 
 export default defineConfig({
   weapp: {
-    srcRoot: './src',
+    srcRoot: "./src",
+  },
+  resolve: {
+    alias: {
+      "@": "./src",
+    },
   },
   plugins: [
     UnifiedViteWeappTailwindcssPlugin({
@@ -13,8 +18,8 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        silenceDeprecations: ['legacy-js-api'],
+        silenceDeprecations: ["legacy-js-api"],
       },
     },
   },
-})
+});

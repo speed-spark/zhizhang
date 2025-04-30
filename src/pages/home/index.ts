@@ -64,11 +64,13 @@ defineComponent(() => {
   };
 
   const onLogin = () => {
+    console.log("oooo");
     wx.login({
       success: (res) => {
+        console.log("code", res.code);
         if (res.code) {
           wx.request({
-            url: "https://ledger-core-backend.elevenzjx.workers.dev/api/login",
+            url: "http://localhost:8787/api/login",
             method: "POST",
             data: { code: res.code },
             dataType: "json",

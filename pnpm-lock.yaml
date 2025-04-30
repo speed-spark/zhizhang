@@ -11,6 +11,9 @@ importers:
       '@vue-mini/core':
         specifier: ^1.2.2
         version: 1.2.2
+      '@vue-mini/pinia':
+        specifier: ^0.1.2
+        version: 0.1.2(@vue-mini/core@1.2.2)
       dayjs:
         specifier: ^1.11.13
         version: 1.11.13
@@ -1797,6 +1800,11 @@ packages:
 
   '@vue-mini/core@1.2.2':
     resolution: {integrity: sha512-qnwnrmsfpEbs9fGke97uLp7wiup8sqqN/hyIAV9GzRXMFUHvPjo57CTf7CmudSp95qRXVnHwujtdNwZTiytmZw==}
+
+  '@vue-mini/pinia@0.1.2':
+    resolution: {integrity: sha512-sIYKWpP1Gd+Pa40FHfJYFIk1iN7Mf5DKdwpYFH17X4tKjRDPU0i1EJLU0WsqmkmLUJp8J+Wpa1gTHe3IjeRu2A==}
+    peerDependencies:
+      '@vue-mini/core': ^1.2.1
 
   '@vue/compiler-core@3.5.12':
     resolution: {integrity: sha512-ISyBTRMmMYagUxhcpyEH0hpXRd/KqDU4ymofPgl2XAkY9ZhQ+h0ovEZJIiPop13UmR/54oA2cgMDjgroRelaEw==}
@@ -6897,6 +6905,10 @@ snapshots:
     dependencies:
       '@vue/reactivity': 3.5.13
       miniprogram-api-typings: 4.0.5
+
+  '@vue-mini/pinia@0.1.2(@vue-mini/core@1.2.2)':
+    dependencies:
+      '@vue-mini/core': 1.2.2
 
   '@vue/compiler-core@3.5.12':
     dependencies:
