@@ -1,15 +1,14 @@
-import { ref, computed } from "@vue-mini/core";
+import { ref } from "@vue-mini/core";
 import { defineStore } from "@vue-mini/pinia";
-import { LoginResponse } from "../lib/type";
+import { LoginResponse, Category } from "../lib/type";
 
 export const useUserStore = defineStore("user", () => {
-  const userInfo = ref<LoginResponse["data"] | null>(null);
-  const categoryMap = computed(() => {
-    if (!userInfo.value) return {};
-    return JSON.parse(userInfo.value.categoryMap ?? "");
-  });
+  const userId = ref("");
+  const categoryMap = ref<Category[]>([]);
+  const loginLoading = ref(false);
 
-  const onLogin = () => {
+  const login = () => {
+    loginLoading.value = true;
     wx.login({
       success: (res) => {
         if (res.code) {
@@ -19,13 +18,14 @@ export const useUserStore = defineStore("user", () => {
             data: { code: res.code },
             dataType: "json",
             success: (res) => {
-              console.log("登录成功", res);
               const { data } = res.data as LoginResponse;
-              userInfo.value = data;
+              userId.value = data.id;
+              categoryMap.value = JSON.parse(data.categoryMap);
               wx.setStorage({
                 key: "userInfo",
                 data: data,
               });
+              loginLoading.value = false;
             },
             fail: () => {
               // 这里只处理网络请求失败的情况
@@ -34,11 +34,12 @@ export const useUserStore = defineStore("user", () => {
                 icon: "error",
                 duration: 2000,
               });
+              loginLoading.value = false;
             },
           });
         }
       },
     });
   };
-  return { userInfo, onLogin, categoryMap };
+  return { userId, categoryMap, login, loginLoading };
 });

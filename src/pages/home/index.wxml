@@ -1,21 +1,15 @@
 <view class="p-4 space-y-4">
-
   <view class="flex justify-center my-4">
-    <t-button bindtap="onLogin" theme="primary">登录</t-button>
-    <view >{{ userInfo.id }}</view>
-  </view>
-
-    <view class="flex justify-center my-4">
     <t-button bindtap="onData" theme="primary">获取数据</t-button>
   </view>
-
-<view class="space-y-2">
-  <view wx:for="{{transactionList}}" wx:for-item="transaction"  wx:for-key="transaction.id" class="p-2 bg-white shadow rounded">
-    <text>{{ transaction.amount }}</text>
-    <text>{{ transaction.type }}</text>
-    <text class="{{ transaction.isRecorded ? 'text-green-500' : 'text-red-500' }}">{{ transaction.isRecorded ? '已入账' : '未入账' }}</text>
-    <text>{{ transaction.time }}</text>
+  <view class="space-y-2">
+    <view wx:for="{{transactionList}}" wx:for-item="transaction" wx:for-key="transaction.id" class="p-2 bg-white shadow rounded">
+      <text>{{ transaction.amount }}</text>
+      <text>{{ transaction.type }}</text>
+      <text class="{{ transaction.isRecorded ? 'text-green-500' : 'text-red-500' }}">
+        {{ transaction.isRecorded ? '已入账' : '未入账' }}
+      </text>
+      <text>{{ transaction.time }}</text>
+    </view>
   </view>
-</view>
-
 </view>

@@ -1,19 +1,29 @@
 <view class="h-screen w-screen bg-gray-50">
+  <button wx:if="{{ !userId }}" bindtap="login" loading="{{ loginLoading }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg active:scale-95 transition-all border-0 flex items-center justify-center w-full max-w-xs" hover-class="none">
+    登录
+  </button>
   <!-- id展示 -->
-  <view class="flex items-center justify-between p-4 bg-white border-b border-gray-200">
+  <view wx:else class="flex items-center justify-between p-4 bg-white border-b border-gray-200">
     <view class="flex items-center">
       <text class="mr-2 text-gray-600">ID</text>
-      <text class="text-gray-600 text-xs">{{ userInfo.id }}</text>
+      <text class="text-gray-600 text-xs">{{ userId }}</text>
     </view>
     <view class="flex items-center" bindtap="onCopyId">
       <text class="mr-2 text-gray-600">复制</text>
     </view>
   </view>
   <!-- 类别展示 -->
-  <view class="flex items-center justify-between p-4 bg-white border-b border-gray-200">
-    <view class="flex items-center">
+  <view class="p-4 bg-white border-b border-gray-200">
+    <view class="flex items-center justify-between">
       <text class="mr-2 text-gray-600">分类</text>
-      <view wx:for="{{JSON.parse(userInfo.categoryMap)}}">{{ item }}</view>
+    </view>
+    <view class="h-12 px-4 flex items-center justify-between bg-pink-100 text-lg">
+      <input placeholder="添加分类" value="{{ inputValue }}" bindinput="onInputChange" />
+      <text bindtap="updateCategoryMap" data-type="add">添加</text>
+    </view>
+    <view class="h-12 px-4 flex items-center justify-between bg-pink-100 text-lg" wx:for="{{categoryMap}}" wx:key="label">
+      <view>{{ item.label }}</view>
+      <view bindtap="updateCategoryMap" data-type="remove" data-label="{{ item.label }}">删除</view>
     </view>
   </view>
 </view>

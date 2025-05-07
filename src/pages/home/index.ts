@@ -1,5 +1,7 @@
 import { defineComponent, ref } from "@vue-mini/core";
 import dayjs from "dayjs";
+import { storeToRefs } from "@vue-mini/pinia";
+import { useUserStore } from "../../store/userStore";
 
 // 添加时间格式化函数
 const formatDate = (time: string): string => {
@@ -17,12 +19,12 @@ const formatDate = (time: string): string => {
 
 defineComponent(() => {
   const greeting = ref("欢迎使用 Vue Mini");
-  const userInfo = ref();
   const transactionList = ref();
+  const userStore = useUserStore();
+  const { userId } = storeToRefs(userStore);
 
   const onData = () => {
-    console.log("gg", userInfo.value);
-    if (!userInfo.value) {
+    if (!userId.value) {
       wx.showToast({
         title: "请先登录",
         icon: "error",
@@ -33,7 +35,7 @@ defineComponent(() => {
     // https://ledger-core-backend.elevenzjx.workers.dev/
     // http://localhost:8787/
     wx.request({
-      url: `https://ledger-core-backend.elevenzjx.workers.dev/api/transactions/${userInfo.value.id}`,
+      url: `https://ledger-core-backend.elevenzjx.workers.dev/api/transactions/${userId.value}`,
       method: "GET",
       success: (res) => {
         if (res.statusCode === 200) {
@@ -63,42 +65,8 @@ defineComponent(() => {
     });
   };
 
-  const onLogin = () => {
-    console.log("oooo");
-    wx.login({
-      success: (res) => {
-        console.log("code", res.code);
-        if (res.code) {
-          wx.request({
-            url: "http://localhost:8787/api/login",
-            method: "POST",
-            data: { code: res.code },
-            dataType: "json",
-            success: (res) => {
-              const { data } = res.data;
-              wx.setStorage({
-                key: "userInfo",
-                data: data,
-              });
-              userInfo.value = data;
-            },
-            fail: () => {
-              // 这里只处理网络请求失败的情况
-              wx.showToast({
-                title: "网络请求失败",
-                icon: "error",
-                duration: 2000,
-              });
-            },
-          });
-        }
-      },
-    });
-  };
   return {
-    userInfo,
     greeting,
-    onLogin,
     onData,
     transactionList,
   };

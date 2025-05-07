@@ -6,3 +6,7 @@ export interface LoginResponse {
   message: string;
   ok: boolean;
 }
+
+export interface Category {
+  label: string;
+}
