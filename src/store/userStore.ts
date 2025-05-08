@@ -1,12 +1,12 @@
 import { ref } from "@vue-mini/core";
 import { defineStore } from "@vue-mini/pinia";
 import { LoginResponse, Category } from "../lib/type";
+import { baseUrl } from "../config";
 
 export const useUserStore = defineStore("user", () => {
   const userId = ref("");
   const categoryMap = ref<Category[]>([]);
   const loginLoading = ref(false);
-  const app = getApp();
 
   const login = () => {
     loginLoading.value = true;
@@ -14,7 +14,7 @@ export const useUserStore = defineStore("user", () => {
       success: (res) => {
         if (res.code) {
           wx.request({
-            url: app.baseUrl + "api/login",
+            url: baseUrl + "api/login",
             method: "POST",
             data: { code: res.code },
             dataType: "json",

@@ -31,6 +31,7 @@ defineComponent(() => {
     let categoryMapCopy = JSON.parse(
       JSON.stringify(categoryMap.value),
     ) as Category[];
+
     if (type === "add") {
       if (!inputValue.value.trim()) {
         wx.showToast({
@@ -57,6 +58,10 @@ defineComponent(() => {
         const { data } = res.data as { data: { categoryMap: string } };
         categoryMap.value = JSON.parse(data.categoryMap);
         inputValue.value = "";
+        wx.setStorage({
+          key: "userCategory",
+          data: data.categoryMap,
+        });
       },
       fail: () => {
         wx.showToast({
