@@ -18,12 +18,14 @@ const formatDate = (time: string): string => {
 };
 
 defineComponent(() => {
-  const greeting = ref("欢迎使用 Vue Mini");
   const transactionList = ref();
   const userStore = useUserStore();
   const { userId } = storeToRefs(userStore);
+  const app = getApp();
 
   const onData = () => {
+    console.log("app.baseUrl", app.baseUrl);
+
     if (!userId.value) {
       wx.showToast({
         title: "请先登录",
@@ -32,15 +34,13 @@ defineComponent(() => {
       });
       return;
     }
-    // https://ledger-core-backend.elevenzjx.workers.dev/
-    // http://localhost:8787/
     wx.request({
-      url: `https://ledger-core-backend.elevenzjx.workers.dev/api/transactions/${userId.value}`,
+      url: app.baseUrl + `api/transactions/${userId.value}`,
       method: "GET",
       success: (res) => {
         if (res.statusCode === 200) {
           console.log("列表数据", res);
-          const { data } = res.data;
+          const { data } = res.data as { data: [] };
           transactionList.value = data.map((item) => ({
             ...item,
             time: formatDate(item.time),
@@ -66,7 +66,6 @@ defineComponent(() => {
   };
 
   return {
-    greeting,
     onData,
     transactionList,
   };

@@ -3,13 +3,14 @@
     <t-button bindtap="onData" theme="primary">获取数据</t-button>
   </view>
   <view class="space-y-2">
-    <view wx:for="{{transactionList}}" wx:for-item="transaction" wx:for-key="transaction.id" class="p-2 bg-white shadow rounded">
-      <text>{{ transaction.amount }}</text>
-      <text>{{ transaction.type }}</text>
-      <text class="{{ transaction.isRecorded ? 'text-green-500' : 'text-red-500' }}">
-        {{ transaction.isRecorded ? '已入账' : '未入账' }}
+    <view wx:for="{{transactionList}}" wx:key="id" class="p-2 bg-white shadow rounded">
+      <text>{{ item.amount }}</text>
+      <text>{{ item.type }}</text>
+      <view>{{ item.originalMessage }}</view>
+      <text class="{{ item.isRecorded ? 'text-green-500' : 'text-red-500' }}">
+        {{ item.isRecorded ? '已入账' : '未入账' }}
       </text>
-      <text>{{ transaction.time }}</text>
+      <text>{{ item.time }}</text>
     </view>
   </view>
 </view>

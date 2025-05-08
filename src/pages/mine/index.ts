@@ -10,6 +10,7 @@ defineComponent(() => {
 
   const inputValue = ref("");
   const showAddInput = ref(false);
+  const app = getApp();
 
   // 拷贝Id
   const onCopyId = () => {
@@ -46,7 +47,7 @@ defineComponent(() => {
     }
 
     wx.request({
-      url: `http://localhost:8787/api/users/categoryMap/${userId.value}`,
+      url: app.baseUrl + `api/users/categoryMap/${userId.value}`,
       method: "PUT",
       data: {
         categoryMap: JSON.stringify(categoryMapCopy),

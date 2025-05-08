@@ -6,6 +6,7 @@ export const useUserStore = defineStore("user", () => {
   const userId = ref("");
   const categoryMap = ref<Category[]>([]);
   const loginLoading = ref(false);
+  const app = getApp();
 
   const login = () => {
     loginLoading.value = true;
@@ -13,7 +14,7 @@ export const useUserStore = defineStore("user", () => {
       success: (res) => {
         if (res.code) {
           wx.request({
-            url: "http://localhost:8787/api/login",
+            url: app.baseUrl + "api/login",
             method: "POST",
             data: { code: res.code },
             dataType: "json",
@@ -22,8 +23,12 @@ export const useUserStore = defineStore("user", () => {
               userId.value = data.id;
               categoryMap.value = JSON.parse(data.categoryMap);
               wx.setStorage({
-                key: "userInfo",
-                data: data,
+                key: "userId",
+                data: data.id,
+              });
+              wx.setStorage({
+                key: "userCategory",
+                data: data.categoryMap,
               });
               loginLoading.value = false;
             },
